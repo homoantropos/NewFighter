@@ -4,11 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLOutput;
-import java.util.ArrayList;
 import java.util.TreeSet;
-
-import static javax.swing.BoxLayout.Y_AXIS;
 
 public class PersonsCreator {
 
@@ -17,7 +13,8 @@ public class PersonsCreator {
     Integer age;
     TreeSet<Person> persons = new TreeSet<>();
 
-    JButton button;
+    JButton addButton;
+    JButton printPersons;
     JTextField text;
     JTextField agetext;
 
@@ -47,19 +44,24 @@ public class PersonsCreator {
 
         panel.setBackground(Color.gray);
 
-        button = new JButton("ДОДАТИ УЧАСНИКА");
-        button.setFont(font);
-        button.requestFocus();
-        button.addActionListener(new ButtonListener());
+        addButton = new JButton("ДОДАТИ УЧАСНИКА");
+        addButton.setFont(font);
+        addButton.requestFocus();
+        addButton.addActionListener(new ButtonListener());
 
+        printPersons = new JButton ("Надрукувати учасників");
+        printPersons.addActionListener(new PrintListener());
+
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.add(label);
         panel.add(text);
         panel.add(agelabel);
         panel.add(agetext);
+        panel.add(addButton);
 
         frame.getContentPane().add(BorderLayout.NORTH, panelUp);
         frame.getContentPane().add(BorderLayout.CENTER, panel);
-        frame.getContentPane().add(BorderLayout.SOUTH, button);
+        frame.getContentPane().add(BorderLayout.SOUTH, printPersons);
 
         frame.setSize(500, 300);
         frame.setBackground(Color.BLUE);
@@ -70,7 +72,7 @@ public class PersonsCreator {
     class TextaListener implements ActionListener {
         public void actionPerformed (ActionEvent tex) {
             name = text.getText();
-            System.out.println(name);
+            //System.out.println(name);
             text.setText("");
             agetext.requestFocus();
         }
@@ -79,9 +81,9 @@ public class PersonsCreator {
     class TextageListener implements ActionListener {
         public void actionPerformed (ActionEvent ageev) {
             age = Integer.parseInt(agetext.getText());
-            System.out.println(age);
+           // System.out.println(age);
             agetext.setText("");
-            button.requestFocus();
+            addButton.requestFocus();
         }
     }
 
@@ -89,13 +91,17 @@ public class PersonsCreator {
         public void actionPerformed (ActionEvent ev) {
              person = new Person (name, age);
              persons.add(person);
-             int count = 0;
-             person.printTitle();
-             for (Person p : persons) {
-                 count = count+1;
-                 System.out.println(count + " " + p.toString());
-             }
              text.requestFocus();
+        }
+    }
+    class PrintListener implements ActionListener {
+        public void actionPerformed (ActionEvent print){
+            int count = 0;
+            Person.printTitle();
+            for (Person p : persons) {
+                count = count+1;
+                System.out.println(count + " " + p.toString());
+            }
         }
     }
 
